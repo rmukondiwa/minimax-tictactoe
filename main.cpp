@@ -9,7 +9,7 @@ namespace{
 
 void display(auto& board)
 {
-    std::cout<<"\n Your Turn:\n";
+    std::cout<<"\nYour Turn:\n";
     for(auto& row : board)
     {
         std::cout<<row[0] << "|"<<row[1]<<"|"<<row[2]<<"\n";
@@ -18,7 +18,7 @@ void display(auto& board)
 }
 }
 
-int main(int argc, char** argv)
+int main()
 {
     Engine engine;
     const auto& boardState = engine.getBoard();
@@ -29,7 +29,7 @@ int main(int argc, char** argv)
         int playerin = 0;
         std::cin >> playerin;
         int movesLeft = engine.playerMove(playerin);
-        
+
         if(movesLeft == 0)
         {
             std::cout<<"GAME OVER!\n";
