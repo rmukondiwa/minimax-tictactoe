@@ -25,9 +25,9 @@ int main(int argc, char** argv)
     const auto& boardState = board.getBoard();
 
     display(boardState);
-    //int playerin = 0;
-    //std::cin >> playerin;
-    //playerMove(playerin)
+    int playerin = 0;
+    std::cin >> playerin;
+    playerMove(playerin)
 
     return 0;
 }
