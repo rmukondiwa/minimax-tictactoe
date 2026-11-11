@@ -99,7 +99,7 @@ class AI
 
         }
 
-        // evaluate current board
+        // evaluate current board 
         int evaluate(auto& board)
         {
             // check rows
