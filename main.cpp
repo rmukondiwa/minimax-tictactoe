@@ -1,4 +1,4 @@
-#include "board.hpp"
+#include "engine.hpp"
 #include "minmax.hpp"
 
 #include <iostream>
@@ -20,19 +20,23 @@ void display(auto& board)
 
 int main(int argc, char** argv)
 {
-    Board board;
-    const auto& boardState = board.getBoard();
-    AI ai;
+    Engine engine;
+    const auto& boardState = engine.getBoard();
 
-    for(int i = 0; i<3; i++)
+    while(true)
     {
         display(boardState);
         int playerin = 0;
         std::cin >> playerin;
-        board.playerMove(playerin);
+        int movesLeft = engine.playerMove(playerin);
         display(boardState);
+
+        if(movesLeft == 0)
+        {
+            std::cout<<"GAME OVER!\n";
+            break;
+        }
     }
-    ai.nextMove(boardState);
 
     return 0;
 }

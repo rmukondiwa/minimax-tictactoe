@@ -1,14 +1,24 @@
 #pragma once
-#include "board.hpp"
 
 #include <utility>
+#include <iostream>
+#include <algorithm>
 #include <iostream>
 
 class AI
 {
     public:
+        int toggle(auto& board, int movesLeft)
+        {
+            const auto& cell = nextMove(board, movesLeft);
+            int cellIndex = cell.first * 3 + cell.second;
+            std::cout<<"AI wants to play cell " << cellIndex<<std::endl;
+            return cellIndex;
+        }
+    
+    private:
         // find best possible move
-        std::pair<int, int> nextMove(auto& board)
+        std::pair<int, int> nextMove(auto& board, int movesLeft)
         {
             int bestScore = -11;
             int row = 0;
@@ -19,7 +29,7 @@ class AI
                 {
                     if(board[i][j] == 'X' || board[i][j] == '0') continue;
 
-                    int moveScore = minmax(board, 0, false);
+                    int moveScore = minmax(board, 0, true, movesLeft);
 
                     if(moveScore > bestScore)
                     {
@@ -31,23 +41,60 @@ class AI
 
             return {row, col};
         }
-    
-    private:
-        
         // find optimal score using minmax algorithm
-        int minmax(auto& board, int depth, bool isMax)
+        int minmax(auto& board, int depth, bool isMax, int movesLeft)
         {
-
             int score = evaluate(board);
 
             if(score == 10)
             {
-                std::cout<<"ai lost!\n";
                 return score - depth;
             }
             else if (score == -10)
             {
                 return score + depth;
+            }
+
+            if(movesLeft == 0) return 0;
+            
+            // the maximizing player's turn (AI)
+            if (isMax)
+            {
+                int best = -11;
+                for(int i = 0; i<3; i++)
+                {
+                    for(int j = 0; j<3; j++)
+                    {
+
+                        if(board[i][j] == 'O' || board[i][j] == 'X') continue;
+                        board[i][j] = 'O';
+
+                        int best = std::max(best, minmax(board, depth+1, false, movesLeft-1));
+                        int cellIndex = i * 3 +j;
+                        board[i][j] = cellIndex + '0';
+                    }
+                }
+
+                return best;
+            }
+            else
+            {
+                int best = 11;
+                for(int i = 0; i<3; i++)
+                {
+                    for(int j = 0; j<3; j++)
+                    {
+
+                        if(board[i][j] == 'O' || board[i][j] == 'X') continue;
+                        board[i][j] = 'X';
+
+                        int best = std::max(best, minmax(board, depth+1, true, movesLeft-1));
+                        int cellIndex = i * 3 +j;
+                        board[i][j] = cellIndex + '0';
+                    }
+                }
+
+                return best;
             }
 
         }
