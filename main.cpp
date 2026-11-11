@@ -29,8 +29,7 @@ int main(int argc, char** argv)
         int playerin = 0;
         std::cin >> playerin;
         int movesLeft = engine.playerMove(playerin);
-        display(boardState);
-
+        
         if(movesLeft == 0)
         {
             std::cout<<"GAME OVER!\n";
