@@ -4,20 +4,6 @@
 #include <iostream>
 #include <vector>
 
-
-namespace{
-
-void display(auto& board)
-{
-    std::cout<<"\nYour Turn:\n";
-    for(auto& row : board)
-    {
-        std::cout<<row[0] << "|"<<row[1]<<"|"<<row[2]<<"\n";
-        // TODO: figure out horizontal bars
-    }
-}
-}
-
 int main()
 {
     Engine engine;
@@ -25,7 +11,7 @@ int main()
 
     while(true)
     {
-        display(boardState);
+        engine.display(boardState);
         int playerin = 0;
         std::cin >> playerin;
         int movesLeft = engine.playerMove(playerin);

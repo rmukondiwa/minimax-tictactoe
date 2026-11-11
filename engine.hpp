@@ -38,6 +38,16 @@ class Engine
             return movesLeft;
         }
 
+        void display(auto& board)
+        {
+            std::cout<<"\nYour Turn:\n";
+            for(auto& row : board)
+            {
+                std::cout<<row[0] << "|"<<row[1]<<"|"<<row[2]<<"\n";
+                // TODO: figure out horizontal bars
+            }
+        }
+
     
     private:
         Grid board;
