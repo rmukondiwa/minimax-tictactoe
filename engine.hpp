@@ -38,7 +38,7 @@ class Engine
             return movesLeft;
         }
 
-        void display(auto& board)
+        void display()
         {
             std::cout<<"\nYour Turn:\n";
             for(auto& row : board)

@@ -7,11 +7,10 @@
 int main()
 {
     Engine engine;
-    const auto& boardState = engine.getBoard();
 
     while(true)
     {
-        engine.display(boardState);
+        engine.display();
         int playerin = 0;
         std::cin >> playerin;
         int movesLeft = engine.playerMove(playerin);
