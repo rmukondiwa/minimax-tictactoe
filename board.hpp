@@ -19,11 +19,10 @@ class Board
 
         void playerMove(int cellIndex)
         {
-            turns++;
+            turns+=2;
             char player = (turns%2) ? 'O' : 'X';
             int row = cellLocations[cellIndex].first;
             int col = cellLocations[cellIndex].second;
-            std::cout<< "Row: " << row <<"Col: " << col << "\n";
             board[row][col] = player;
         }
 
