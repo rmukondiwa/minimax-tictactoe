@@ -88,7 +88,7 @@ class AI
                         if(board[i][j] == 'O' || board[i][j] == 'X') continue;
                         board[i][j] = 'X';
 
-                        int best = std::max(best, minmax(board, depth+1, true, movesLeft-1));
+                        int best = std::min(best, minmax(board, depth+1, true, movesLeft-1));
                         int cellIndex = i * 3 +j;
                         board[i][j] = cellIndex + '0';
                     }
