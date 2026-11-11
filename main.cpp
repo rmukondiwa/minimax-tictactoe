@@ -7,18 +7,12 @@
 int main()
 {
     Engine engine;
-
-    while(true)
-    {
-        engine.display();
-        int playerin = 0;
-        std::cin >> playerin;
-        int movesLeft = engine.playerMove(playerin);
-
-        if(movesLeft == 0)
+    bool continueGame = true;
+    while(continueGame)
+    { 
+        if(engine.newGame())
         {
-            std::cout<<"GAME OVER!\n";
-            break;
+            
         }
     }
 
