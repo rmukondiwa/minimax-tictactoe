@@ -29,7 +29,7 @@ class AI
                 {
                     if(board[i][j] == 'X' || board[i][j] == 'O') continue;
 
-                    int moveScore = minmax(board, 0, true, movesLeft);
+                    int moveScore = minimax(board, 0, true, movesLeft);
 
                     if(moveScore > bestScore)
                     {
@@ -42,7 +42,7 @@ class AI
             return {row, col};
         }
         // find optimal score using minmax algorithm
-        int minmax(auto& board, int depth, bool isMax, int movesLeft)
+        int minimax(auto& board, int depth, bool isMax, int movesLeft)
         {
             int score = evaluate(board);
 
@@ -69,7 +69,7 @@ class AI
                         if(board[i][j] == 'O' || board[i][j] == 'X') continue;
                         board[i][j] = 'O';
 
-                        best = std::max(best, minmax(board, depth+1, false, movesLeft-1));
+                        best = std::max(best, minimax(board, depth+1, false, movesLeft-1));
                         int cellIndex = i * 3 +j;
                         board[i][j] = cellIndex + '0';
                     }
@@ -88,7 +88,7 @@ class AI
                         if(board[i][j] == 'O' || board[i][j] == 'X') continue;
                         board[i][j] = 'X';
 
-                        best = std::min(best, minmax(board, depth+1, true, movesLeft-1));
+                        best = std::min(best, minimax(board, depth+1, true, movesLeft-1));
                         int cellIndex = i * 3 +j;
                         board[i][j] = cellIndex + '0';
                     }
