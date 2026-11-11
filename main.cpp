@@ -6,9 +6,9 @@
 
 namespace{
 
-void display(Board& board)
+void display(auto& board)
 {
-    for(auto row : board)
+    for(auto& row : board)
     {
         int col0 = row[0];
         int col1 = row[1];
@@ -25,7 +25,7 @@ int main(int argc, const char* argv)
 
     while(true)
     {
-        display(board);
+        display(boardState);
     }
 
     return 0;
