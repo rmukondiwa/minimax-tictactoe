@@ -27,7 +27,7 @@ class AI
             {
                 for(int j = 0; j<3; j++)
                 {
-                    if(board[i][j] == 'X' || board[i][j] == '0') continue;
+                    if(board[i][j] == 'X' || board[i][j] == 'O') continue;
 
                     int moveScore = minmax(board, 0, true, movesLeft);
 

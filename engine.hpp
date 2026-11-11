@@ -25,7 +25,7 @@ class Engine
             int row = cellLocations[cellIndex].first;
             int col = cellLocations[cellIndex].second;
             board[row][col] = player;
-            movesLeft -=turns;
+            movesLeft--;
             if(movesLeft != 0)
             {
                 int aiCell = ai.toggle(board, movesLeft);
