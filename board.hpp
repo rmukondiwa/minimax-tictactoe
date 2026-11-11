@@ -5,17 +5,23 @@
 class Board
 {
     public:
-        Board()
+        using Grid = std::array<std::array<int, 3>, 3>;
+
+        Board() : turns(0)
         {
             loadBoard(board);
         }
+        
+        Grid getBoard() { return board; }
 
-        std::array<std::array<int, 3>, 3> getBoard() { return board; }
+        
+
     
     private:
-        std::array<std::array<int, 3>, 3> board;
+        Grid board;
+        int turns;
         
-        void loadBoard(std::array<std::array<int, 3>, 3>&  board)
+        void loadBoard(Grid&  board)
         {
             for(int row = 0; row<3; row++)
             {
