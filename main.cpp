@@ -10,10 +10,7 @@ void display(auto& board)
 {
     for(auto& row : board)
     {
-        int col0 = row[0];
-        int col1 = row[1];
-        int col2 = row[2];
-        std::cout<<col0 << "|"<<col1<<"|"<<col2<<"\n";
+        std::cout<<row[0] << "|"<<row[1]<<"|"<<row[2]<<"\n";
         // TODO: figure out horizontal bars
     }
 }
@@ -27,7 +24,8 @@ int main(int argc, char** argv)
     display(boardState);
     int playerin = 0;
     std::cin >> playerin;
-    playerMove(playerin)
+    board.playerMove(playerin);
+    display(boardState);
 
     return 0;
 }

@@ -2,26 +2,29 @@
 
 #include <array>
 #include <unordered_map>
-#include <pair>
+#include <utility>
+#include <iostream>
 
 class Board
 {
     public:
-        using Grid = std::array<std::array<int, 3>, 3>;
+        using Grid = std::array<std::array<char, 3>, 3>;
 
         Board() : turns(-1)
         {
             loadBoard(board);
         }
         
-        Grid getBoard() { return board; }
+        Grid& getBoard() { return board; }
 
-        Grid playerMove(int cell)
+        void playerMove(int cellIndex)
         {
             turns++;
             char player = (turns%2) ? 'O' : 'X';
-
-            Grid
+            int row = cellLocations[cellIndex].first;
+            int col = cellLocations[cellIndex].second;
+            std::cout<< "Row: " << row <<"Col: " << col << "\n";
+            board[row][col] = player;
         }
 
     
@@ -37,7 +40,7 @@ class Board
                 for(int col = 0; col<3; col++)
                 {
                     int cellIndex = row * 3 + col;
-                    board[row][col] = cellIndex;
+                    board[row][col] = (cellIndex)+'0';
 
                     cellLocations[cellIndex] = {row, col};
                 }
