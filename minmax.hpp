@@ -105,7 +105,7 @@ class AI
             // check rows
             for(int row = 0; row<3; row++)
             {
-                if (board[row][0] == board[row][1] && board[row][1] == board[row][0])
+                if (board[row][0] == board[row][1] && board[row][1] == board[row][2])
                 {
                     if(board[row][0] == 'O') {return 10;}
                     else return -10;
