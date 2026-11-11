@@ -11,9 +11,9 @@ class Engine
     public:
         using Grid = std::array<std::array<char, 3>, 3>;
 
-        Engine() : turns(-1), movesLeft(9)
+        Engine() : turns(-1), movesLeft(9), gamesPlayed(1)
         {
-            loadBoard(board);
+            loadBoard();
         }
         
         bool newGame()
@@ -31,34 +31,20 @@ class Engine
                     char endGame;
                     std::cin >> endGame;
 
-                    if(endGame == 'n')
+                    if(endGame == 'n' || endGame == 'N')
                     {
                         displaySummary();
                         break;
                     }
+                    else
+                    {
+                        loadBoard();
+                        gamesPlayed++;
+                    }
+                    
                 }
             }
 
-        }
-
-        int playerMove(int cellIndex)
-        {
-            turns++;
-            char player = (turns%2) ? 'O' : 'X';
-            int row = cellLocations[cellIndex].first;
-            int col = cellLocations[cellIndex].second;
-            board[row][col] = player;
-            movesLeft--;
-            if(movesLeft != 0)
-            {
-                int aiCell = ai.toggle(board, movesLeft);
-                int row = cellLocations[aiCell].first;
-                int col = cellLocations[aiCell].second;
-                board[row][col] = 'O';
-                movesLeft--;
-            }
-            turns++;
-            return movesLeft;
         }
 
     private:
@@ -96,7 +82,7 @@ class Engine
             }
         }
         
-        void loadBoard(Grid&  board)
+        void loadBoard()
         {
             for(int row = 0; row<3; row++)
             {
@@ -108,6 +94,26 @@ class Engine
                     cellLocations[cellIndex] = {row, col};
                 }
             }
+        }
+
+        int playerMove(int cellIndex)
+        {
+            turns++;
+            char player = (turns%2) ? 'O' : 'X';
+            int row = cellLocations[cellIndex].first;
+            int col = cellLocations[cellIndex].second;
+            board[row][col] = player;
+            movesLeft--;
+            if(movesLeft != 0)
+            {
+                int aiCell = ai.toggle(board, movesLeft);
+                int row = cellLocations[aiCell].first;
+                int col = cellLocations[aiCell].second;
+                board[row][col] = 'O';
+                movesLeft--;
+            }
+            turns++;
+            return movesLeft;
         }
 
         const double winRate()
