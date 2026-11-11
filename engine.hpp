@@ -9,9 +9,7 @@
 class Engine
 {
     public:
-        using Grid = std::array<std::array<char, 3>, 3>;
-
-        Engine() : turns(-1), movesLeft(9), gamesPlayed(1)
+        Engine() : turns(-1), movesLeft(9), gamesPlayed(1), playerWins(0)
         {
             loadBoard();
         }
@@ -40,6 +38,7 @@ class Engine
                     {
                         loadBoard();
                         gamesPlayed++;
+                        playerWins += wonGame() ? 1 : 0;
                     }
                     
                 }
@@ -48,6 +47,7 @@ class Engine
         }
 
     private:
+        using Grid = std::array<std::array<char, 3>, 3>;
         Grid board;
         AI ai;
         std::unordered_map<int, std::pair<int, int>> cellLocations;
@@ -55,10 +55,10 @@ class Engine
         int movesLeft;
         int gamesPlayed;
         int playerWins;
-        int playerLosses;
 
         void display()
         {
+            std::cout<<"\nGame Session: \n" << gamesPlayed;
             std::cout<<"\nYour Turn:\n";
             for(auto& row : board)
             {
@@ -73,7 +73,7 @@ class Engine
 
             std::cout<<"Games played: " << gamesPlayed << "\n";
             std::cout<<"Your wins: " << playerWins << "\n";
-            std::cout<<"Your losses: " << playerLosses << "\n";
+            std::cout<<"Your losses: " << gamesPlayed-playerWins << "\n";
             std::cout<<"Winning %: " << winRate() << "\n";
             for(auto& row : board)
             {
@@ -119,6 +119,50 @@ class Engine
         const double winRate()
         {
             return static_cast<double>(playerWins) / gamesPlayed;
+        }
+
+        bool wonGame()
+        {
+             // check rows
+            for(int row = 0; row<3; row++)
+            {
+                if ((board[row][0] == board[row][1] 
+                    && board[row][1] == board[row][2])
+                    && board[row][0] == 'X')
+                {
+                    return true;
+                }
+            }
+
+            // check columns
+            for(int col = 0; col < 3; col++)
+            {
+                if((board[0][col] == board[1][col] 
+                    && board[1][col] == board[2][col])
+                    && board[0][col] == 'X')
+                {
+                    return true;
+                }
+            }
+
+            // check diagonal
+            if((board[0][0] == board[1][1] 
+                && board[1][1] == board[2][2])
+                && board[0][0] == 'X')
+            {
+                return true;
+            }
+
+            // check anti-diagonal
+            if((board[0][2] == board[1][1] 
+                && board[1][1] == board[2][0])
+                && board[0][2] == 'X')
+            {
+                return true;
+            }
+
+            // player lost
+            return false;
         }
 
         
