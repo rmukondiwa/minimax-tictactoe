@@ -14,19 +14,17 @@ void display(auto& board)
         int col1 = row[1];
         int col2 = row[2];
         std::cout<<col0 << "|"<<col1<<"|"<<col2<<"\n";
+        // TODO: figure out horizontal bars
     }
 }
 }
 
-int main(int argc, const char* argv)
+int main(int argc, char** argv)
 {
     Board board;
     const auto& boardState = board.getBoard();
 
-    while(true)
-    {
-        display(boardState);
-    }
+    display(boardState);
 
     return 0;
 }
