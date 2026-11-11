@@ -67,6 +67,9 @@ class Engine
         std::unordered_map<int, std::pair<int, int>> cellLocations;
         int turns;
         int movesLeft;
+        int gamesPlayed;
+        int playerWins;
+        int playerLosses;
 
         void display()
         {
@@ -105,6 +108,11 @@ class Engine
                     cellLocations[cellIndex] = {row, col};
                 }
             }
+        }
+
+        const double winRate()
+        {
+            return static_cast<double>(playerWins) / gamesPlayed;
         }
 
         
