@@ -54,7 +54,7 @@ class Engine
             }
         }
 
-        char getCell(char cellIndex)
+        char getCell(int cellIndex)
         {
             int row = cellLocations[cellIndex].first;
             int col = cellLocations[cellIndex].second;
