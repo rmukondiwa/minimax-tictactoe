@@ -9,7 +9,7 @@
 class Engine
 {
     public:
-        Engine() : turns(0), movesLeft(9), gamesPlayed(0), humanWins(0), gameOver(false)
+        Engine() : turns(0), movesLeft(9), gamesPlayed(0), humanWins(0), computerWins(0), gameOver(false), draws(0)
         {
             loadBoard();
             loadCellLocations();
@@ -41,7 +41,9 @@ class Engine
         int movesLeft;
         int gamesPlayed;
         int humanWins;
+        int computerWins;
         bool gameOver;
+        int draws;
 
         void display()
         {
@@ -56,6 +58,7 @@ class Engine
 
         char getCell(int cellIndex)
         {
+            if(cellIndex < 0) return '\0';
             int row = cellLocations[cellIndex].first;
             int col = cellLocations[cellIndex].second;
 
@@ -79,8 +82,8 @@ class Engine
             }
             else
             {
-                char player = getCell(hasWinner().second);
-                humanWins += ( player== 'X') ? 1 : 0;
+                char player =hasWinner().second;
+                if(player == '\0') draws++;
                 printWinner(player);
                 if(continuing())
                 {
@@ -104,7 +107,8 @@ class Engine
             std::cout<<" \nSummary:\n";
             std::cout<<"Games played: " << gamesPlayed << "\n";
             std::cout<<"Your wins: " << humanWins << "\n";
-            std::cout<<"Your losses: " << gamesPlayed-humanWins << "\n";
+            std::cout<<"Your losses: " << gamesPlayed-(humanWins+draws)<< "\n";
+            std::cout<<"Your Draws: " << draws << "\n";
             std::cout<<"Winning Rate: " << winRate() << "%\n";
             for(auto& row : board)
             {
@@ -184,7 +188,22 @@ class Engine
             return (static_cast<double>(humanWins) / gamesPlayed)*100;
         }
 
-        std::pair<bool, int> hasWinner()
+        char winner(int cellIndex)
+        {
+            char player = getCell(cellIndex);
+
+            if(player == 'X')
+            {
+                humanWins++;
+            }
+            else if(player == 'O')
+            {
+                computerWins++;
+            }
+            return player;
+        }
+
+        std::pair<bool, char> hasWinner()
         {
              // check rows
             for(int row = 0; row<3; row++)
@@ -192,7 +211,7 @@ class Engine
                 if (board[row][0] == board[row][1]
                     && board[row][1] == board[row][2])
                 {
-                    return {true, row*3};
+                    return {true, winner(row*3)};
                 }
             }
 
@@ -202,7 +221,7 @@ class Engine
                 if(board[0][col] == board[1][col]
                     && board[1][col] == board[2][col])
                 {
-                    return {true, col};
+                    return {true, winner(col)};
                 }
             }
 
@@ -210,17 +229,17 @@ class Engine
             if(board[0][0] == board[1][1]
                 && board[1][1] == board[2][2])
             {
-                return {true, 0};
+                return {true, winner(0)};
             }
 
             // check anti-diagonal
             if(board[0][2] == board[1][1]
                 && board[1][1] == board[2][0])
             {
-                return {true, 2};
+                return {true, winner(2)};
             }
 
-            // player lost
-            return {false,-1};
+            // no winner
+            return {false,'\0'};
         }
 };
