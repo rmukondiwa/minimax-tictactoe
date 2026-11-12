@@ -16,9 +16,9 @@ class Engine
 
         bool runGame()
         {
+            display();
             while(checkGame())
             {
-                display();
                 int playerin = 0;
                 std::cin >> playerin;
                 playerMove(playerin);
@@ -26,6 +26,7 @@ class Engine
                 if(checkGame())
                 {
                     aiMove();
+                    display();
                 }
             }
         }
