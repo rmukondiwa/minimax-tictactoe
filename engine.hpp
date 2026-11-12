@@ -19,9 +19,8 @@ class Engine
             display();
             while(checkGame())
             {
-                int playerin = 0;
-                std::cin >> playerin;
-                playerMove(playerin);
+                
+                playerMove();
                 display();
                 if(checkGame())
                 {
@@ -132,13 +131,15 @@ class Engine
             }
         }
 
-        void playerMove(int cellIndex)
+        void playerMove()
         {
-            turns++;
+            int cellIndex = 0;
+            std::cin >> cellIndex;
             char player = (turns%2) ? 'O' : 'X';
             int row = cellLocations[cellIndex].first;
             int col = cellLocations[cellIndex].second;
             board[row][col] = player;
+            turns++;
             movesLeft--;
         }
 
