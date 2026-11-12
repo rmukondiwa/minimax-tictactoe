@@ -12,6 +12,7 @@ class Engine
         Engine() : turns(0), movesLeft(9), gamesPlayed(1), humanWins(0)
         {
             loadBoard();
+            loadCellLocations();
         }
 
         void runGame()
@@ -127,6 +128,17 @@ class Engine
                 {
                     int cellIndex = row * 3 + col;
                     board[row][col] = (cellIndex)+'0';
+                }
+            }
+        }
+
+        void loadCellLocations()
+        {
+            for(int row = 0; row<3; row++)
+            {
+                for(int col = 0; col<3; col++)
+                {
+                    int cellIndex = row * 3 + col;
                     cellLocations[cellIndex] = {row, col};
                 }
             }
