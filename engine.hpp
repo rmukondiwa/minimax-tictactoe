@@ -77,15 +77,17 @@ class Engine
             else
             {
                 gamesPlayed++;
-                humanWins += (getCell(hasWinner().second) == 'X') ? 1 : 0;
+                char player = getCell(hasWinner().second);
+                humanWins += ( player== 'X') ? 1 : 0;
                 if(continuing())
                 {
+                    printWinner(player);
                     loadBoard();
                     return true;
                 }
                 else
                 {
-                    displaySummary(getCell(hasWinner().second));
+                    displaySummary(player);
                     return false;
                 }
             }
@@ -93,19 +95,7 @@ class Engine
 
         void displaySummary(char player)
         {
-            if(player == 'X')
-            {
-                std::cout<<"\nHuman wins!";
-            }
-            else if (player == 'O')
-            {
-                std::cout<<"\nComputer wins!";
-            }
-            else
-            {
-                std::cout<<"\nDRAW!";
-            }
-
+            printWinner(player);
             std::cout<<" \nSummary:\n";
             std::cout<<"Games played: " << gamesPlayed << "\n";
             std::cout<<"Your wins: " << humanWins << "\n";
@@ -115,6 +105,22 @@ class Engine
             {
                 std::cout<<row[0] << "|"<<row[1]<<"|"<<row[2]<<"\n";
                 // TODO: figure out horizontal bars
+            }
+        }
+
+        void printWinner(char player)
+        {
+            if(player == 'X')
+            {
+                std::cout<<"\nHuman wins!\n";
+            }
+            else if (player == 'O')
+            {
+                std::cout<<"\nComputer wins!\n";
+            }
+            else
+            {
+                std::cout<<"\nDRAW!\n";
             }
         }
 
