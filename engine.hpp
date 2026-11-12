@@ -9,7 +9,7 @@
 class Engine
 {
     public:
-        Engine() : turns(0), movesLeft(9), gamesPlayed(1), humanWins(0)
+        Engine() : turns(0), movesLeft(9), gamesPlayed(0), humanWins(0), gameOver(false)
         {
             loadBoard();
             loadCellLocations();
@@ -17,15 +17,17 @@ class Engine
 
         void runGame()
         {
-            display();
-            while(checkGame())
+            while(!gameOver)
             {
-                playerMove();
                 display();
-                if(checkGame())
+                int round = gamesPlayed;
+                playerMove();
+                checkGame();
+                if(!gameOver && round == gamesPlayed)
                 {
-                    aiMove();
                     display();
+                    aiMove();
+                    checkGame();
                 }
             }
         }
@@ -39,6 +41,7 @@ class Engine
         int movesLeft;
         int gamesPlayed;
         int humanWins;
+        bool gameOver;
 
         void display()
         {
@@ -72,25 +75,27 @@ class Engine
         {
             if (movesLeft>0 && !hasWinner().first)
             {
-                return true;
+                gameOver = false;
             }
             else
             {
-                gamesPlayed++;
                 char player = getCell(hasWinner().second);
                 humanWins += ( player== 'X') ? 1 : 0;
+                printWinner(player);
                 if(continuing())
                 {
-                    printWinner(player);
+                    gamesPlayed++;
                     loadBoard();
-                    return true;
                 }
                 else
                 {
+                    gamesPlayed++;
+                    gameOver = true;
                     displaySummary(player);
-                    return false;
                 }
             }
+
+            return gameOver;
         }
 
         void displaySummary(char player)
@@ -100,7 +105,7 @@ class Engine
             std::cout<<"Games played: " << gamesPlayed << "\n";
             std::cout<<"Your wins: " << humanWins << "\n";
             std::cout<<"Your losses: " << gamesPlayed-humanWins << "\n";
-            std::cout<<"Winning %: " << winRate() << "\n";
+            std::cout<<"Winning Rate: " << winRate() << "%\n";
             for(auto& row : board)
             {
                 std::cout<<row[0] << "|"<<row[1]<<"|"<<row[2]<<"\n";
@@ -128,6 +133,7 @@ class Engine
         {
             turns = 0;
             movesLeft = 9;
+            gameOver = false;
             for(int row = 0; row<3; row++)
             {
                 for(int col = 0; col<3; col++)
@@ -175,7 +181,7 @@ class Engine
 
         double winRate() const
         {
-            return static_cast<double>(humanWins) / gamesPlayed;
+            return (static_cast<double>(humanWins) / gamesPlayed)*100;
         }
 
         std::pair<bool, int> hasWinner()
