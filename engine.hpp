@@ -47,8 +47,8 @@ class Engine
 
         void display()
         {
-            std::cout<<"\nGame Session: \n" << gamesPlayed;
-            std::cout<<"\nYour Turn:\n";
+            std::cout<<"\nGame Session: " << gamesPlayed<<"\n";
+            if(turns%2 ==0) std::cout<<"Your Turn!\n";
             for(auto& row : board)
             {
                 std::cout<<row[0] << "|"<<row[1]<<"|"<<row[2]<<"\n";
