@@ -146,7 +146,7 @@ class Engine
 
         void playerMove()
         {
-            int cellIndex = 0;
+            int cellIndex = 0;  // declaring this guarantees predictable fall back
             std::cin >> cellIndex;
             char player = (turns%2) ? 'O' : 'X';
             int row = cellLocations[cellIndex].first;
