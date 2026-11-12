@@ -12,7 +12,6 @@ class AI
         {
             const auto& cell = nextMove(board, movesLeft);
             int cellIndex = cell.first * 3 + cell.second;
-            std::cout<<"AI wants to play cell " << cellIndex<<"\n";
             return cellIndex;
         }
 
