@@ -9,17 +9,16 @@
 class Engine
 {
     public:
-        Engine() : turns(-1), movesLeft(9), gamesPlayed(1), humanWins(0)
+        Engine() : turns(0), movesLeft(9), gamesPlayed(1), humanWins(0)
         {
             loadBoard();
         }
 
-        bool runGame()
+        void runGame()
         {
             display();
             while(checkGame())
             {
-                
                 playerMove();
                 display();
                 if(checkGame())
@@ -70,10 +69,9 @@ class Engine
 
         bool checkGame()
         {
-            bool isOver = true;
             if (movesLeft>0 && !hasWinner().first)
             {
-                isOver = false;
+                return true;
             }
             else
             {
@@ -82,13 +80,14 @@ class Engine
                 if(continuing())
                 {
                     loadBoard();
+                    return true;
                 }
                 else
                 {
                     displaySummary(getCell(hasWinner().second));
+                    return false;
                 }
             }
-            return true;
         }
 
         void displaySummary(char player)
@@ -120,6 +119,8 @@ class Engine
 
         void loadBoard()
         {
+            turns = 0;
+            movesLeft = 9;
             for(int row = 0; row<3; row++)
             {
                 for(int col = 0; col<3; col++)
@@ -145,16 +146,16 @@ class Engine
 
         void aiMove()
         {
-            turns++;
             char player = (turns%2) ? 'O' : 'X';
             int aiCell = ai.toggle(board, movesLeft);
             int row = cellLocations[aiCell].first;
             int col = cellLocations[aiCell].second;
             board[row][col] = player;
             movesLeft--;
+            turns++;
         }
 
-        const double winRate()
+        double winRate() const
         {
             return static_cast<double>(humanWins) / gamesPlayed;
         }
