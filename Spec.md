@@ -19,3 +19,4 @@ Constraints
 - C++ standard library only, no external dependencies.
 - Single file or multiple files, your choice.
 - Runs entirely in the terminal.
+
