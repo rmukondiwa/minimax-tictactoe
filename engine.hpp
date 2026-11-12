@@ -61,7 +61,7 @@ class Engine
 
         bool continuing()
         {
-            std::cout<<"Continue?[y] End?[n]\n";
+            std::cout<<"Continue?: Yes[y] No[n]\n";
             char endGame;
             std::cin >> endGame;
             
