@@ -7,7 +7,7 @@ int main()
     Engine engine;
 
     std::cout<< "WELCOME TO TIC TAC TOE:\n";
-    engine.newGame();
+    engine.runGame();
 
     return 0;
 }

@@ -14,14 +14,37 @@ class Engine
             loadBoard();
         }
 
-        bool newGame()
+        bool runGame()
         {
             while(true)
             {
                 display();
-                int playerin = 0;
-                std::cin >> playerin;
-                playerMove(playerin);
+                if(movesLeft>0)
+                {
+                    int playerin = 0;
+                    std::cin >> playerin;
+                    playerMove(playerin);
+                    if(wonGame().first)
+                    {
+                        gameOver(wonGame().second);
+                    }
+                }
+
+                if(wonGame().first)
+                {
+                    gameOver(wonGame().second);
+                }
+
+                if(movesLeft>0)
+                {
+                    aiMove()
+                }
+                if(wonGame().first)
+                {
+                    gameOver(wonGame().second);
+                }
+                
+                
 
                 if(movesLeft == 0)
                 {
@@ -65,6 +88,14 @@ class Engine
             }
         }
 
+        void gameOver(int cellIndex)
+        {
+            winner
+            int row = cellLocations[cellIndex].first;
+            int col = cellLocations[cellIndex].second;
+            auto& winner = winner();
+        }
+
         void displaySummary()
         {
             std::cout<<"\nSession Ended:\nSummary:\n";
@@ -101,19 +132,17 @@ class Engine
             int col = cellLocations[cellIndex].second;
             board[row][col] = player;
             movesLeft--;
-            if(movesLeft != 0 && !wonGame())
-            {
-                int aiCell = ai.toggle(board, movesLeft);
-                int row = cellLocations[aiCell].first;
-                int col = cellLocations[aiCell].second;
-                board[row][col] = 'O';
-                movesLeft--;
-                turns++;
-            }
-            else
-            {
-                return;
-            }
+        }
+
+        void aiMove()
+        {
+            turns++;
+            char player = (turns%2) ? 'O' : 'X';
+            int aiCell = ai.toggle(board, movesLeft);
+            int row = cellLocations[aiCell].first;
+            int col = cellLocations[aiCell].second;
+            board[row][col] = player;
+            movesLeft--;
         }
 
         const double winRate()
@@ -121,47 +150,43 @@ class Engine
             return static_cast<double>(playerWins) / gamesPlayed;
         }
 
-        bool wonGame()
+        std::pair<bool, int> wonGame()
         {
              // check rows
             for(int row = 0; row<3; row++)
             {
-                if ((board[row][0] == board[row][1]
+                if (board[row][0] == board[row][1]
                     && board[row][1] == board[row][2])
-                    && board[row][0] == 'X')
                 {
-                    return true;
+                    return {true, row*3};
                 }
             }
 
             // check columns
             for(int col = 0; col < 3; col++)
             {
-                if((board[0][col] == board[1][col]
+                if(board[0][col] == board[1][col]
                     && board[1][col] == board[2][col])
-                    && board[0][col] == 'X')
                 {
-                    return true;
+                    return {true, col};
                 }
             }
 
             // check diagonal
-            if((board[0][0] == board[1][1]
+            if(board[0][0] == board[1][1]
                 && board[1][1] == board[2][2])
-                && board[0][0] == 'X')
             {
-                return true;
+                return {true, 0};
             }
 
             // check anti-diagonal
-            if((board[0][2] == board[1][1]
+            if(board[0][2] == board[1][1]
                 && board[1][1] == board[2][0])
-                && board[0][2] == 'X')
             {
-                return true;
+                return {true, 2};
             }
 
             // player lost
-            return false;
+            return {false,-1};
         }
 };
