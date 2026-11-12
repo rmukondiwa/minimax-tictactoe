@@ -22,7 +22,7 @@ class Engine
                 int playerin = 0;
                 std::cin >> playerin;
                 playerMove(playerin);
-                
+                display();
                 if(checkGame())
                 {
                     aiMove();
