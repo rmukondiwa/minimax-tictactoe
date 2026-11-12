@@ -9,60 +9,23 @@
 class Engine
 {
     public:
-        Engine() : turns(-1), movesLeft(9), gamesPlayed(1), playerWins(0)
+        Engine() : turns(-1), movesLeft(9), gamesPlayed(1), humanWins(0)
         {
             loadBoard();
         }
 
         bool runGame()
         {
-            while(true)
+            while(checkGame())
             {
                 display();
-                if(movesLeft>0)
-                {
-                    int playerin = 0;
-                    std::cin >> playerin;
-                    playerMove(playerin);
-                    if(wonGame().first)
-                    {
-                        gameOver(wonGame().second);
-                    }
-                }
-
-                if(wonGame().first)
-                {
-                    gameOver(wonGame().second);
-                }
-
-                if(movesLeft>0)
-                {
-                    aiMove()
-                }
-                if(wonGame().first)
-                {
-                    gameOver(wonGame().second);
-                }
+                int playerin = 0;
+                std::cin >> playerin;
+                playerMove(playerin);
                 
-                
-
-                if(movesLeft == 0)
+                if(checkGame())
                 {
-                    std::cout<<"Continue?[y] End?[n]\n";
-                    char endGame;
-                    std::cin >> endGame;
-
-                    if(endGame == 'n' || endGame == 'N')
-                    {
-                        displaySummary();
-                        break;
-                    }
-                    else
-                    {
-                        loadBoard();
-                        gamesPlayed++;
-                        playerWins += wonGame() ? 1 : 0;
-                    }
+                    aiMove();
                 }
             }
         }
@@ -75,7 +38,7 @@ class Engine
         int turns;
         int movesLeft;
         int gamesPlayed;
-        int playerWins;
+        int humanWins;
 
         void display()
         {
@@ -88,21 +51,65 @@ class Engine
             }
         }
 
-        void gameOver(int cellIndex)
+        char getCell(char cellIndex)
         {
-            winner
             int row = cellLocations[cellIndex].first;
             int col = cellLocations[cellIndex].second;
-            auto& winner = winner();
+
+            return board[row][col];
         }
 
-        void displaySummary()
+        bool continuing()
         {
-            std::cout<<"\nSession Ended:\nSummary:\n";
+            std::cout<<"Continue?[y] End?[n]\n";
+            char endGame;
+            std::cin >> endGame;
+            
+            return endGame == 'y' || endGame == 'Y';
+        }
 
+        bool checkGame()
+        {
+            bool isOver = true;
+            if (movesLeft>0 && !hasWinner().first)
+            {
+                isOver = false;
+            }
+            else
+            {
+                gamesPlayed++;
+                humanWins += (getCell(hasWinner().second) == 'X') ? 1 : 0;
+                if(continuing())
+                {
+                    loadBoard();
+                }
+                else
+                {
+                    displaySummary(getCell(hasWinner().second));
+                }
+            }
+            return true;
+        }
+
+        void displaySummary(char player)
+        {
+            if(player == 'X')
+            {
+                std::cout<<"\nHuman wins!";
+            }
+            else if (player == 'O')
+            {
+                std::cout<<"\nComputer wins!";
+            }
+            else
+            {
+                std::cout<<"\nDRAW!";
+            }
+
+            std::cout<<" \nSummary:\n";
             std::cout<<"Games played: " << gamesPlayed << "\n";
-            std::cout<<"Your wins: " << playerWins << "\n";
-            std::cout<<"Your losses: " << gamesPlayed-playerWins << "\n";
+            std::cout<<"Your wins: " << humanWins << "\n";
+            std::cout<<"Your losses: " << gamesPlayed-humanWins << "\n";
             std::cout<<"Winning %: " << winRate() << "\n";
             for(auto& row : board)
             {
@@ -147,10 +154,10 @@ class Engine
 
         const double winRate()
         {
-            return static_cast<double>(playerWins) / gamesPlayed;
+            return static_cast<double>(humanWins) / gamesPlayed;
         }
 
-        std::pair<bool, int> wonGame()
+        std::pair<bool, int> hasWinner()
         {
              // check rows
             for(int row = 0; row<3; row++)
