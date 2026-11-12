@@ -29,7 +29,7 @@ class AI
                     if(board[i][j] == 'X' || board[i][j] == 'O') continue;
 
                     board[i][j] = 'O';
-                    int moveScore = minimax(board, 0, false, movesLeft);
+                    int moveScore = minimax(board, 0, false, movesLeft-1);
                     if(moveScore > bestScore)
                     {
                         row = i;
