@@ -1,9 +1,9 @@
 #pragma once
+
 #include "minmax.hpp"
 
 #include <array>
 #include <unordered_map>
-#include <utility>
 #include <iostream>
 
 class Engine
@@ -13,7 +13,7 @@ class Engine
         {
             loadBoard();
         }
-        
+
         bool newGame()
         {
             while(true)
@@ -21,7 +21,7 @@ class Engine
                 display();
                 int playerin = 0;
                 std::cin >> playerin;
-                int movesLeft = playerMove(playerin);
+                playerMove(playerin);
 
                 if(movesLeft == 0)
                 {
@@ -40,10 +40,8 @@ class Engine
                         gamesPlayed++;
                         playerWins += wonGame() ? 1 : 0;
                     }
-                    
                 }
             }
-
         }
 
     private:
@@ -81,7 +79,7 @@ class Engine
                 // TODO: figure out horizontal bars
             }
         }
-        
+
         void loadBoard()
         {
             for(int row = 0; row<3; row++)
@@ -90,13 +88,12 @@ class Engine
                 {
                     int cellIndex = row * 3 + col;
                     board[row][col] = (cellIndex)+'0';
-
                     cellLocations[cellIndex] = {row, col};
                 }
             }
         }
 
-        int playerMove(int cellIndex)
+        void playerMove(int cellIndex)
         {
             turns++;
             char player = (turns%2) ? 'O' : 'X';
@@ -104,16 +101,19 @@ class Engine
             int col = cellLocations[cellIndex].second;
             board[row][col] = player;
             movesLeft--;
-            if(movesLeft != 0)
+            if(movesLeft != 0 && !wonGame())
             {
                 int aiCell = ai.toggle(board, movesLeft);
                 int row = cellLocations[aiCell].first;
                 int col = cellLocations[aiCell].second;
                 board[row][col] = 'O';
                 movesLeft--;
+                turns++;
             }
-            turns++;
-            return movesLeft;
+            else
+            {
+                return;
+            }
         }
 
         const double winRate()
@@ -126,7 +126,7 @@ class Engine
              // check rows
             for(int row = 0; row<3; row++)
             {
-                if ((board[row][0] == board[row][1] 
+                if ((board[row][0] == board[row][1]
                     && board[row][1] == board[row][2])
                     && board[row][0] == 'X')
                 {
@@ -137,7 +137,7 @@ class Engine
             // check columns
             for(int col = 0; col < 3; col++)
             {
-                if((board[0][col] == board[1][col] 
+                if((board[0][col] == board[1][col]
                     && board[1][col] == board[2][col])
                     && board[0][col] == 'X')
                 {
@@ -146,7 +146,7 @@ class Engine
             }
 
             // check diagonal
-            if((board[0][0] == board[1][1] 
+            if((board[0][0] == board[1][1]
                 && board[1][1] == board[2][2])
                 && board[0][0] == 'X')
             {
@@ -154,7 +154,7 @@ class Engine
             }
 
             // check anti-diagonal
-            if((board[0][2] == board[1][1] 
+            if((board[0][2] == board[1][1]
                 && board[1][1] == board[2][0])
                 && board[0][2] == 'X')
             {
@@ -164,6 +164,4 @@ class Engine
             // player lost
             return false;
         }
-
-        
 };

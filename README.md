@@ -2,7 +2,7 @@
 
 ## Spec
 
-Build a terminal-based Tic-Tac-Toe game in C++ where a human plays against the computer.
+### Build a terminal-based Tic-Tac-Toe game in C++ where a human plays against the computer.
 
 Requirements
 
