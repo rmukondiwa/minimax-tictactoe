@@ -1,6 +1,6 @@
 #pragma once
 
-#include "minmax.hpp"
+#include "minimax.hpp"
 
 #include <array>
 #include <unordered_map>
