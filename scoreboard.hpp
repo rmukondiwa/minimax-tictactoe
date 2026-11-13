@@ -1,5 +1,7 @@
 #pragma once
 
+#include "types.hpp"
+
 class Scoreboard{
     public:
         int gamesPlayed;
