@@ -49,10 +49,15 @@ class Engine
         {
             std::cout<<"\nGame Session: " << gamesPlayed<<"\n";
             if(turns%2 ==0) std::cout<<"Your Turn!\n";
-            for(auto& row : board)
+            for(int i =0; i<3; i++)
             {
-                std::cout<<row[0] << "|"<<row[1]<<"|"<<row[2]<<"\n";
-                // TODO: figure out horizontal bars
+                auto& row = board[i];
+                std::cout<<" " <<row[0] << " | "<<row[1]<<" | "<<row[2]<<"\n";
+                
+                if(i+1<3)
+                {
+                    std::cout<<"---+---+---\n";
+                }
             }
         }
 
@@ -82,6 +87,7 @@ class Engine
             }
             else
             {
+                display();
                 char player =hasWinner().second;
                 if(player == '\0') draws++;
                 printWinner(player);
@@ -110,11 +116,7 @@ class Engine
             std::cout<<"Your losses: " << gamesPlayed-(humanWins+draws)<< "\n";
             std::cout<<"Your Draws: " << draws << "\n";
             std::cout<<"Winning Rate: " << winRate() << "%\n";
-            for(auto& row : board)
-            {
-                std::cout<<row[0] << "|"<<row[1]<<"|"<<row[2]<<"\n";
-                // TODO: figure out horizontal bars
-            }
+            display();
         }
 
         void printWinner(char player)
