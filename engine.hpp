@@ -49,6 +49,8 @@ class Engine
         {
             std::cout<<"\nGame Session: " << gamesPlayed<<"\n";
             if(turns%2 ==0) std::cout<<"Your Turn!\n";
+            else std::cout<<"Computer Turn!\n";
+
             for(int i =0; i<3; i++)
             {
                 auto& row = board[i];
@@ -68,6 +70,11 @@ class Engine
             int col = cellLocations[cellIndex].second;
 
             return board[row][col];
+        }
+
+        int getCellIndex(int row, int col)
+        {
+            return (row * 3 + col)+1;
         }
 
         bool continuing()
@@ -143,7 +150,7 @@ class Engine
             {
                 for(int col = 0; col<3; col++)
                 {
-                    int cellIndex = row * 3 + col;
+                    int cellIndex = getCellIndex(row, col);
                     board[row][col] = (cellIndex)+'0';
                 }
             }
@@ -155,7 +162,7 @@ class Engine
             {
                 for(int col = 0; col<3; col++)
                 {
-                    int cellIndex = row * 3 + col;
+                    int cellIndex = getCellIndex(row, col);
                     cellLocations[cellIndex] = {row, col};
                 }
             }

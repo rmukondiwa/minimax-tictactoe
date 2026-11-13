@@ -1,5 +1,5 @@
 #pragma once
-
+#include "engine.hpp"
 #include <utility>
 #include <iostream>
 #include <algorithm>
@@ -11,7 +11,7 @@ class AI
         int toggle(auto& board, int movesLeft)
         {
             const auto& cell = nextMove(board, movesLeft);
-            int cellIndex = cell.first * 3 + cell.second;
+            int cellIndex = (cell.first * 3 + cell.second)+1;
             return cellIndex;
         }
 
@@ -36,7 +36,7 @@ class AI
                         col = j;
                         bestScore = moveScore;
                     }
-                    int cellIndex = i * 3 +j;
+                    int cellIndex = (i * 3 +j)+1;
                     board[i][j] = cellIndex + '0';
                 }
             }
@@ -68,7 +68,7 @@ class AI
                         if(board[i][j] == 'O' || board[i][j] == 'X') continue;
                         board[i][j] = 'O';
                         best = std::max(best, minimax(board, depth+1, false, movesLeft-1));
-                        int cellIndex = i * 3 +j;
+                        int cellIndex = (i * 3 +j)+1;
                         board[i][j] = cellIndex + '0';
                     }
                 }
@@ -84,7 +84,7 @@ class AI
                         if(board[i][j] == 'O' || board[i][j] == 'X') continue;
                         board[i][j] = 'X';
                         best = std::min(best, minimax(board, depth+1, true, movesLeft-1));
-                        int cellIndex = i * 3 +j;
+                        int cellIndex = (i * 3 +j)+1;
                         board[i][j] = cellIndex + '0';
                     }
                 }
