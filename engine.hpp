@@ -9,7 +9,7 @@
 class Engine
 {
     public:
-        Engine() : turns(0), movesLeft(9), gamesPlayed(0), humanWins(0), computerWins(0), gameOver(false), draws(0)
+        Engine() : turns(0), movesLeft(9), gamesPlayed(1), humanWins(0), computerWins(0), gameOver(false), draws(0)
         {
             loadBoard();
             loadCellLocations();
@@ -98,7 +98,6 @@ class Engine
                 }
                 else
                 {
-                    gamesPlayed++;
                     gameOver = true;
                     displaySummary(player);
                 }
@@ -111,7 +110,7 @@ class Engine
         {
             printWinner(player);
             std::cout<<" \nSummary:\n";
-            std::cout<<"Games played: " << gamesPlayed << "\n";
+            std::cout<<"Games played: " << gamesPlayed-1 << "\n";
             std::cout<<"Your wins: " << humanWins << "\n";
             std::cout<<"Your losses: " << gamesPlayed-(humanWins+draws)<< "\n";
             std::cout<<"Your Draws: " << draws << "\n";
