@@ -1,6 +1,7 @@
 #pragma once
 
 #include "console.hpp"
+#include "scoreboard.hpp"
 
 class Session{
     public:
@@ -25,5 +26,5 @@ class Session{
 
     private:
         Console console;
-        
+        Scoreboard score;
 };

@@ -18,11 +18,7 @@ class Engine
         AI ai;
         int turns;
         int movesLeft;
-        int gamesPlayed;
-        int humanWins;
-        int computerWins;
         bool gameOver;
-        int draws;
 
         bool checkGame()
         {
@@ -69,10 +65,5 @@ class Engine
             board[row][col] = player;
             movesLeft--;
             turns++;
-        }
-
-        double winRate() const
-        {
-            return (static_cast<double>(humanWins) / gamesPlayed)*100;
         }
 };

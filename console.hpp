@@ -62,6 +62,5 @@ class Console
             }
         }
 
-    private:
-
+        int readCell(Board& board);
 };
