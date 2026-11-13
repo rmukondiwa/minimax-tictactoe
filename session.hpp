@@ -2,6 +2,7 @@
 
 #include "console.hpp"
 #include "scoreboard.hpp"
+#include "game.hpp"
 
 class Session{
     public:
@@ -21,10 +22,12 @@ class Session{
                     aiMove();
                     checkGame();
                 }
+
             }
         }
 
     private:
         Console console;
         Scoreboard score;
+        Game game;
 };
