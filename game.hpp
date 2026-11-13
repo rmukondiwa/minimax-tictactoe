@@ -5,4 +5,4 @@ class Game{
     public:
         Game() = default;
 
-}
+};
