@@ -8,14 +8,16 @@
 class AI
 {
     public:
-        int toggle(auto& board, int movesLeft)
+        std::pair<int, int> toggle(auto& board, int movesLeft)
         {
-            const auto& cell = nextMove(board, movesLeft);
-            int cellIndex = (cell.first * 3 + cell.second)+1;
-            return cellIndex;
+            return nextMove(board, movesLeft);
         }
 
     private:
+        int getCellIndex(int row, int col)
+        {
+            return (row * 3 + col)+1;
+        }
         // find best possible move
         std::pair<int, int> nextMove(auto& board, int movesLeft)
         {
@@ -36,8 +38,7 @@ class AI
                         col = j;
                         bestScore = moveScore;
                     }
-                    int cellIndex = (i * 3 +j)+1;
-                    board[i][j] = cellIndex + '0';
+                    board[i][j] =  getCellIndex(i, j) + '0';
                 }
             }
             return {row, col};
@@ -68,8 +69,7 @@ class AI
                         if(board[i][j] == 'O' || board[i][j] == 'X') continue;
                         board[i][j] = 'O';
                         best = std::max(best, minimax(board, depth+1, false, movesLeft-1));
-                        int cellIndex = (i * 3 +j)+1;
-                        board[i][j] = cellIndex + '0';
+                        board[i][j] = getCellIndex(i, j) + '0';
                     }
                 }
                 return best;
@@ -84,8 +84,7 @@ class AI
                         if(board[i][j] == 'O' || board[i][j] == 'X') continue;
                         board[i][j] = 'X';
                         best = std::min(best, minimax(board, depth+1, true, movesLeft-1));
-                        int cellIndex = (i * 3 +j)+1;
-                        board[i][j] = cellIndex + '0';
+                        board[i][j] = getCellIndex(i,j) + '0';
                     }
                 }
                 return best;

@@ -12,7 +12,6 @@ class Engine
         Engine() : turns(0), movesLeft(9), gamesPlayed(1), humanWins(0), computerWins(0), gameOver(false), draws(0)
         {
             loadBoard();
-            loadCellLocations();
         }
 
         void runGame()
@@ -36,7 +35,6 @@ class Engine
         using Grid = std::array<std::array<char, 3>, 3>;
         Grid board;
         AI ai;
-        std::unordered_map<int, std::pair<int, int>> cellLocations;
         int turns;
         int movesLeft;
         int gamesPlayed;
@@ -61,20 +59,6 @@ class Engine
                     std::cout<<"---+---+---\n";
                 }
             }
-        }
-
-        char getCell(int cellIndex)
-        {
-            if(cellIndex < 0) return '\0';
-            int row = cellLocations[cellIndex].first;
-            int col = cellLocations[cellIndex].second;
-
-            return board[row][col];
-        }
-
-        int getCellIndex(int row, int col)
-        {
-            return (row * 3 + col)+1;
         }
 
         bool continuing()
@@ -156,16 +140,14 @@ class Engine
             }
         }
 
-        void loadCellLocations()
+        int getCellIndex(int row, int col)
         {
-            for(int row = 0; row<3; row++)
-            {
-                for(int col = 0; col<3; col++)
-                {
-                    int cellIndex = getCellIndex(row, col);
-                    cellLocations[cellIndex] = {row, col};
-                }
-            }
+            return (row * 3 + col)+1;
+        }
+
+        std::pair<int, int> toRowCol(int cellIndex)
+        {
+            return {(cellIndex-1)/3, (cellIndex-1)%3};
         }
 
         void playerMove()
@@ -173,8 +155,7 @@ class Engine
             int cellIndex = 0;  // declaring this guarantees predictable fall back
             std::cin >> cellIndex;
             char player = (turns%2) ? 'O' : 'X';
-            int row = cellLocations[cellIndex].first;
-            int col = cellLocations[cellIndex].second;
+            auto [row, col] = toRowCol(cellIndex);
             board[row][col] = player;
             turns++;
             movesLeft--;
@@ -183,9 +164,7 @@ class Engine
         void aiMove()
         {
             char player = (turns%2) ? 'O' : 'X';
-            int aiCell = ai.toggle(board, movesLeft);
-            int row = cellLocations[aiCell].first;
-            int col = cellLocations[aiCell].second;
+            auto [row, col] = ai.toggle(board, movesLeft);
             board[row][col] = player;
             movesLeft--;
             turns++;
@@ -196,21 +175,6 @@ class Engine
             return (static_cast<double>(humanWins) / gamesPlayed)*100;
         }
 
-        char winner(int cellIndex)
-        {
-            char player = getCell(cellIndex);
-
-            if(player == 'X')
-            {
-                humanWins++;
-            }
-            else if(player == 'O')
-            {
-                computerWins++;
-            }
-            return player;
-        }
-
         std::pair<bool, char> hasWinner()
         {
              // check rows
@@ -219,7 +183,7 @@ class Engine
                 if (board[row][0] == board[row][1]
                     && board[row][1] == board[row][2])
                 {
-                    return {true, winner(row*3)};
+                    return {true, board[row][0]};
                 }
             }
 
@@ -229,7 +193,7 @@ class Engine
                 if(board[0][col] == board[1][col]
                     && board[1][col] == board[2][col])
                 {
-                    return {true, winner(col)};
+                    return {true, board[0][col]};
                 }
             }
 
@@ -237,14 +201,14 @@ class Engine
             if(board[0][0] == board[1][1]
                 && board[1][1] == board[2][2])
             {
-                return {true, winner(0)};
+                return {true, board[0][0]};
             }
 
             // check anti-diagonal
             if(board[0][2] == board[1][1]
                 && board[1][1] == board[2][0])
             {
-                return {true, winner(2)};
+                return {true, board[0][2]};
             }
 
             // no winner
