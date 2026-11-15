@@ -4,7 +4,7 @@
 
 class HumanPlayer : Player
 {
-    HumanPlayer() = default;
-
-    virtual int chooseMove(Board& board);
+    public:
+        HumanPlayer() = default;
+        virtual int chooseMove(Board& board);
 };

@@ -8,23 +8,7 @@ class Session{
     public:
         Session() = default;
 
-        void runGame()
-        {
-            while(!gameOver)
-            {
-                console.display();
-                int round = gamesPlayed;
-                playerMove();
-                checkGame();
-                if(!gameOver && round == gamesPlayed)
-                {
-                    console.display();
-                    aiMove();
-                    checkGame();
-                }
-
-            }
-        }
+        void runGame();
 
     private:
         Console console;

@@ -8,10 +8,7 @@ class Scoreboard{
 
         Scoreboard() = default;
 
-        double winRate() const
-        {
-            return (static_cast<double>(humanWins) / gamesPlayed)*100;
-        }
+        double winRate() const;
 
         void record(GameStatus& result);
 

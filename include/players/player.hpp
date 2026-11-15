@@ -3,7 +3,7 @@
 
 class Player
 {
-    Player() = default;
-
-    virtual int chooseMove(Board& board);
+    public:
+        Player() = default;
+        int chooseMove(const Board& board);
 };
